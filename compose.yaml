@@ -1,9 +1,20 @@
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: db
+    restart: always
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_DB=tournament_db'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_USER=president'
     ports:
       - '5432'
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
