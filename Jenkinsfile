@@ -60,7 +60,7 @@ pipeline {
          }
 
 steps {
-                withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                withAWS(region:'us-east-1',credentials:'aws-cred') {
                     script {
                         def gitsha = sh(script: 'git log -n1 --format=format:"%H"', returnStdout: true)
                                      s3_filename = "${s3_filename}-${gitsha}"
@@ -82,7 +82,7 @@ steps {
          }
          steps {
 
-             withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+             withAWS(region:'us-east-1',credentials:'aws-cred') {
                       script {
                             sh """
                                             aws deploy create-deployment \
@@ -122,32 +122,11 @@ steps {
       	}
    	}
  }
+
  post {
     always {
       echo 'Pipeline execution completed.'
       cleanWs()
     }
-    success {
-      script {
-        if (BRANCH_NAME in main_branch) {
-            slackSend(channel:"", attachments: buildSuccess)
-          }
-      }
-        echo 'Pipeline execution successful!'
-    }
-    unstable {
-      echo 'Pipeline execution unstable :/'
-    }
-    failure {
-    script {
-      if (BRANCH_NAME in main_branch) {
-          slackSend(channel:"", attachments: buildError)
-          }
-    }
-        echo 'Pipeline execution failed!'
-    }
-    changed {
-      echo 'Things were different before...'
-    	}
   }
 }
