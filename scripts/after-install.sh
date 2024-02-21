@@ -1,2 +1,2 @@
-cd /home/projects/storefront-aug-backend &&
-docker-compose -f compose.yml build --no-cache
+cd /home/projects/caf-application &&
+docker-compose -f compose.yaml build --no-cache
