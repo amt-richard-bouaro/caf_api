@@ -1,8 +1,8 @@
-def appname = 'caf'
+def appname = 'caf-api'
 def deploy_group = 'java-upskilling-group'
 def deploy_group_prod = 'pc-aug-backend-prod'
 def s3_bucket = 'java-upskilling'
-def s3_filename = 'dev-aug/storefront-aug-src-backend'
+def s3_filename = 'caf-s3-bucket'
 
 //Slack Notification Integration
 def gitName = env.GIT_BRANCH
@@ -66,16 +66,16 @@ pipeline {
 steps {
                 withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     script {
-                        def gitSha = sh(script: 'git log -n1 --format=format:"%H"', returnStdout: true)
-                        def s3Filename = "<span class="math-inline">\{application\_name\}\-</span>{gitSha}"
-                        sh """
-                            aws deploy push \
-                            --application-name ${application_name} \
-                            --description "This is a revision for the <span class="math-inline">\{application\_name\}\-</span>{gitSha}" \
-                            --ignore-hidden-files \
-                            --s3-location s3://<span class="math-inline">\{s3\_bucket\}/</span>{s3Filename}.zip \
-                            --source target
-                        """
+                        def gitsha = sh(script: 'git log -n1 --format=format:"%H"', returnStdout: true)
+                                     s3_filename = "${s3_filename}-${gitsha}"
+                                     sh """
+                                         aws deploy push \
+                                         --application-name ${appname} \
+                                         --description "This is a revision for the ${appname}-${gitsha}" \
+                                         --ignore-hidden-files \
+                                         --s3-location s3://${s3_bucket}/${s3_filename}.zip \
+                                         --source .
+                                       """
                     }
                 }
             }
@@ -88,14 +88,14 @@ steps {
 
              withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                       script {
-                              sh """
-                                  aws deploy create-deployment \
-                                  --application-name ${application_name} \
-                                  --deployment-config-name CodeDeployDefault.OneAtATime \
-                                  --deployment-group-name <span class="math-inline">\{deployment\_group\}</0\> \\
-      \-\-file\-exists\-behavior OVERWRITE \\
-      \-\-s3\-location bucket\=</span>{s3_bucket},key=${s3Filename}.zip,bundleType=zip
-                              """
+                            sh """
+                                            aws deploy create-deployment \
+                                            --application-name ${appname} \
+                                            --deployment-config-name CodeDeployDefault.OneAtATime \
+                                            --deployment-group-name ${deploy_group} \
+                                            --file-exists-behavior OVERWRITE \
+                                            --s3-location bucket=${s3_bucket},key=${s3_filename}.zip,bundleType=zip
+                                          """
                           }
                       }
                   }
@@ -108,14 +108,14 @@ steps {
       steps {
                      withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                          script {
-                             sh """
-                                 aws deploy create-deployment \
-                                 --application-name ${application_name} \
-                                 --deployment-config-name CodeDeployDefault.OneAtATime \
-                                 --deployment-group-name <span class="math-inline">\{deployment\_group\_prod\}</0\> \\
-     \-\-file\-exists\-behavior OVERWRITE \\
-     \-\-s3\-location bucket\=</span>{s3_bucket},key=${s3Filename}.zip,bundleType=zip
-                             """
+                            sh """
+                                           aws deploy create-deployment \
+                                           --application-name ${appname} \
+                                           --deployment-config-name CodeDeployDefault.OneAtATime \
+                                           --deployment-group-name ${deploy_group_prod} \
+                                           --file-exists-behavior OVERWRITE \
+                                           --s3-location bucket=${s3_bucket},key=${s3_filename}.zip,bundleType=zip
+                                         """
                          }
                      }
                  }
