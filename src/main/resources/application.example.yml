@@ -1,7 +1,7 @@
 application:
   security:
     jwt:
-      secret-key: asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4
+      secret-key: asdfSFS34wfiewu9203iod023ndnwu2ionlews232dgdf4
       access-token:
         expiration: 86400000 # a day
       refresh-token:
@@ -9,9 +9,9 @@ application:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tournament_db
-    username: president
-    password: root
+    url: jdbc:postgresql://localhost:5432/database
+    username: admin
+    password: admin
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -28,8 +28,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: richard.bouaro@amalitech.com
-    password: snixhmkmrafjmgri
+    username: example@email.com
+    password: rruesd0iinsdisd
     properties:
       mail:
         smtp:

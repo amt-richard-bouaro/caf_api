@@ -1,4 +1,13 @@
 services:
+  app:
+    image: 'caf-api'
+    container_name: 'java-caf-ap'
+    depends_on:
+      - postgres
+    ports:
+      - '8080:8080'
+    restart: on-failure
+
   postgres:
     image: 'postgres:latest'
     container_name: db
@@ -8,7 +17,7 @@ services:
       - 'POSTGRES_PASSWORD=root'
       - 'POSTGRES_USER=president'
     ports:
-      - '5432'
+      - '5432:5432'
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4
