@@ -1,6 +1,6 @@
 def appname = 'caf-api'
 def deploy_group = 'java-upskilling-group'
-def deploy_group_prod = 'pc-aug-backend-prod'
+// def deploy_group_prod = 'pc-aug-backend-prod'
 def s3_bucket = 'java-upskilling'
 def s3_filename = 'caf-s3-bucket'
 
@@ -37,11 +37,6 @@ pipeline {
   //tools {maven "Maven"}
 
   stages {
-    stage('Install Dependencies') {
-        steps {
-            sh 'mvn clean install'
-        }
-    }
 
     stage('Build') {
         when {
@@ -51,7 +46,8 @@ pipeline {
             }
         }
         steps {
-            sh 'mvn package'
+            sh 'chmod +x ./mvnw'
+            sh './mvnw wrapper:wrapper'
         }
     }
 
@@ -101,25 +97,25 @@ steps {
                   }
 	 }
 
-    stage('Deploy To Production') {
-      when {
-        branch 'staging'
-      }
-      steps {
-                     withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                         script {
-                            sh """
-                                           aws deploy create-deployment \
-                                           --application-name ${appname} \
-                                           --deployment-config-name CodeDeployDefault.OneAtATime \
-                                           --deployment-group-name ${deploy_group_prod} \
-                                           --file-exists-behavior OVERWRITE \
-                                           --s3-location bucket=${s3_bucket},key=${s3_filename}.zip,bundleType=zip
-                                         """
-                         }
-                     }
-                 }
-    }
+//     stage('Deploy To Production') {
+//       when {
+//         branch 'staging'
+//       }
+//       steps {
+//                      withCredentials([usernamePassword(credentialsId: 'aws-cred', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+//                          script {
+//                             sh """
+//                                            aws deploy create-deployment \
+//                                            --application-name ${appname} \
+//                                            --deployment-config-name CodeDeployDefault.OneAtATime \
+//                                            --deployment-group-name ${deploy_group_prod} \
+//                                            --file-exists-behavior OVERWRITE \
+//                                            --s3-location bucket=${s3_bucket},key=${s3_filename}.zip,bundleType=zip
+//                                          """
+//                          }
+//                      }
+//                  }
+//     }
     stage('Clean WS') {
       steps {
         cleanWs()
