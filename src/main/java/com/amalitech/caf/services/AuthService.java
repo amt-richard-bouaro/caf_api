@@ -12,4 +12,5 @@ public interface AuthService {
     AuthResponseDto register(UserEntity payload) throws NoSuchAlgorithmException, InvalidKeySpecException, UnauthorizedException;
     
     AuthResponseDto login(LoginPayload payload) throws NoSuchAlgorithmException, InvalidKeySpecException;
+    
 }

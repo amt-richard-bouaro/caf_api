@@ -1,2 +1,2 @@
 cd /home/projects/caf-application &&
-docker-compose -f compose.yaml build --no-cache
+docker-compose -f compose.yml build --no-cache

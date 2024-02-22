@@ -1,2 +1,2 @@
 cd /home/projects/caf-application &&
-docker-compose -f compose.yaml up -d
+docker-compose -f compose.yml up -d
