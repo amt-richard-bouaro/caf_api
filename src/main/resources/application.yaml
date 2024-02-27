@@ -1,5 +1,8 @@
 server:
   port: 7006
+springdoc:
+  swagger-ui:
+    path: /
 application:
   security:
     jwt:
@@ -10,7 +13,7 @@ application:
         expiration: 604800000 # 7 days
 spring:
   datasource:
-    url: jdbc:postgresql://db:6005/tournament_db
+    url: jdbc:postgresql://postgres:5432/tournament_db
     username: president
     password: root
     driver-class-name: org.postgresql.Driver
