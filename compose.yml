@@ -1,4 +1,13 @@
 services:
+  caf-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: caf-api-container
+    image: caf-api
+    ports:
+      - '7006:7006'
+    restart: on-failure
   postgres:
     image: 'postgres:latest'
     container_name: db
