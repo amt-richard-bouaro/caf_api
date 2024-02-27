@@ -22,7 +22,7 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponseDto> handlerConflictException(
-            UnauthorizedException exception,
+            ConflictException exception,
             WebRequest request
     ) {
         ErrorResponseDto responseDTO = new ErrorResponseDto<NullType>(ResponseStatus.ERROR, exception.getMessage(),
