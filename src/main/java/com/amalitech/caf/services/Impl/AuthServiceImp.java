@@ -2,8 +2,10 @@ package com.amalitech.caf.services.Impl;
 
 import com.amalitech.caf.dtos.response.AuthResponseDto;
 import com.amalitech.caf.dtos.requests.LoginPayload;
+import com.amalitech.caf.dtos.response.UsersResponseDto;
 import com.amalitech.caf.entities.UserEntity;
 import com.amalitech.caf.enums.Role;
+import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;
 import com.amalitech.caf.repositories.UserRepository;
 import com.amalitech.caf.services.AuthService;
@@ -25,74 +27,77 @@ import java.security.spec.InvalidKeySpecException;
 @Service
 @AllArgsConstructor
 public class AuthServiceImp implements AuthService {
-    
+
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    
+
     private final MailService mailService;
-    
+
     private final PasswordEncoder passwordEncoder;
-    
-    
-    public AuthResponseDto register(UserEntity payload) throws NoSuchAlgorithmException, InvalidKeySpecException, UnauthorizedException {
+
+
+    public AuthResponseDto register(UserEntity payload) throws NoSuchAlgorithmException, InvalidKeySpecException, ConflictException {
+
         UserEntity user = UserEntity.builder()
-                                    .firstName(payload.getFirstName())
-                                    .lastName(payload.getLastName())
-                                    .email(payload.getEmail())
-                                    .password(passwordEncoder.encode(payload.getPassword()))
-                                    .role(Role.ADMIN)
-                                    .build();
-        
-        UserEntity savedUser = userRepository.save(user);
-        
-        try {
-            mailService.sendHtmlEmail(savedUser.getEmail(), "Account Registration Successful",
-                    "<h1>Happy Browsing<h1>");
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            
-            throw new UnauthorizedException("Unable to send email");
+                .firstName(payload.getFirstName())
+                .lastName(payload.getLastName())
+                .email(payload.getEmail())
+                .password(passwordEncoder.encode(payload.getPassword()))
+                .role(payload.getRole())
+                .build();
+
+        UserEntity userAlreadyExists = userRepository.findByEmail(user.getEmail());
+
+        if (userAlreadyExists != null) {
+            throw new ConflictException("User already exists");
         }
-        
-        
-        String jwtToken = jwtService.generateToken(savedUser);
-        
-        return AuthResponseDto.builder()
-                              .firstName(savedUser.getFirstName())
-                              .lastName(savedUser.getLastName())
-                              .email(savedUser.getEmail())
-                              .role(savedUser.getRole())
-                              .token(jwtToken)
-                              .build();
+
+        UserEntity savedUser = userRepository.save(user);
+
+//        try {
+//            mailService.sendHtmlEmail(savedUser.getEmail(), "Account Registration Successful",
+//                    "<h1>Happy Browsing<h1>");
+//        } catch (MessagingException | UnsupportedEncodingException e) {
+//            throw new UnauthorizedException("Unable to send email");
+//        }
+
+        return generateAuthResponse(savedUser);
     }
-    
+
+
     public AuthResponseDto login(LoginPayload payload) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        
-        
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(payload.getEmail(), payload.getPassword()));
         } catch (Exception e) {
             throw new UsernameNotFoundException("Invalid email or password");
         }
-        
-        
+
         UserEntity user = userRepository.findByEmail(payload.getEmail());
-        
+
         if (user == null) {
             throw new UsernameNotFoundException("Invalid email or password");
         }
-        
-        String jwtToken = jwtService.generateToken(user);
-        
-        return AuthResponseDto.builder()
-                              .firstName(user.getFirstName())
-                              .lastName(user.getLastName())
-                              .email(user.getEmail())
-                              .role(user.getRole())
-                              .token(jwtToken)
-                              .build();
-        
+
+        return generateAuthResponse(user);
+
     }
-    
+
+    public AuthResponseDto generateAuthResponse(UserEntity user) throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+        String jwtToken = jwtService.generateToken(user);
+
+        return AuthResponseDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .token(jwtToken)
+                .build();
+    }
+
+
 }

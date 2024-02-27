@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UserService {
     List<UsersResponseDto> findAllusers();
+
+    UsersResponseDto findUser(String email);
 }

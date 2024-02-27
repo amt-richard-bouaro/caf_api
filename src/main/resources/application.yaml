@@ -1,35 +1,35 @@
+server:
+  port: 7006
 application:
   security:
     jwt:
-      secret-key: asdfSFS34wfiewu9203iod023ndnwu2ionlews232dgdf4
+      secret-key: asdfSFS34wfsdfsdfSDSD32dfsddDDerQSNCK34SOWEK5354fdgdf4
       access-token:
         expiration: 86400000 # a day
       refresh-token:
         expiration: 604800000 # 7 days
-
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/database
-    username: admin
-    password: admin
+    url: jdbc:postgresql://db:6005/tournament_db
+    username: president
+    password: root
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
   cache:
-    jcache:
+    ehcache:
       config: classpath:ehcache.xml
   mail:
     host: smtp.gmail.com
     port: 587
-    username: example@email.com
-    password: rruesd0iinsdisd
+    username: richard.bouaro@amalitech.com
+    password: snixhmkmrafjmgri
     properties:
       mail:
         smtp:
