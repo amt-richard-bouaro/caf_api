@@ -1,5 +1,5 @@
-def appname = 'java-upkilling'
-def deploy_group = 'java-upskilling-group'
+def appname = 'caf-api'
+def deploy_group = 'caf-api-deployment-group'
 // def deploy_group_prod = 'pc-aug-backend-prod'
 def s3_bucket = 'java-upskilling'
 def s3_filename = 'caf-s3-bucket'
