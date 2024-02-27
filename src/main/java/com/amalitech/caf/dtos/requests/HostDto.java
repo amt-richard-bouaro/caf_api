@@ -1,4 +1,4 @@
-package com.amalitech.caf.dtos.entities;
+package com.amalitech.caf.dtos.requests;
 
 import com.amalitech.caf.entities.TournamentEntity;
 import lombok.AllArgsConstructor;
@@ -15,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class HostDto {
     private Long id;
-    
+
     private String country;
-    
+
     private List<String> cities;
 
 //    private TournamentEntity tournament;

@@ -1,14 +1,4 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: caf-api-container
-    image: caf-api-image
-    ports:
-      - '7006:8080'
-    restart: on-failure
-
   postgres:
     image: 'postgres:latest'
     container_name: db
@@ -18,7 +8,7 @@ services:
       - 'POSTGRES_PASSWORD=root'
       - 'POSTGRES_USER=president'
     ports:
-      - '5432:5432'
+      - '6005:5432'
   pgadmin:
     container_name: pgadmin4_container
     image: dpage/pgadmin4

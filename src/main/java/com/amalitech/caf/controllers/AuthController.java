@@ -1,10 +1,11 @@
 package com.amalitech.caf.controllers;
 
-import com.amalitech.caf.dtos.entities.UserDto;
+import com.amalitech.caf.dtos.requests.NewUserPayload;
 import com.amalitech.caf.dtos.response.AuthResponseDto;
 import com.amalitech.caf.dtos.requests.LoginPayload;
 import com.amalitech.caf.dtos.response.UsersResponseDto;
 import com.amalitech.caf.entities.UserEntity;
+import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;
 import com.amalitech.caf.mappers.UserMapper;
 import com.amalitech.caf.services.AuthService;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -28,36 +30,37 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Auth")
 public class AuthController {
-    
+
     private final AuthService authService;
-    
+
     private final UserMapper userMapper;
-    
+
     private final UserService userService;
-    
+
     @GetMapping("/users")
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<UsersResponseDto>> users() {
         return new ResponseEntity<>(userService.findAllusers(), HttpStatus.OK);
     }
-    
+
     @Operation(description = "Register new user", summary = "This endpoint allows new user registration", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "Unauthorized", responseCode = "403")})
     @PostMapping("/register")
+//    @PostAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AuthResponseDto> register(
-            @RequestBody UserDto newUser
-    ) throws NoSuchAlgorithmException, InvalidKeySpecException, UnauthorizedException {
+            @RequestBody NewUserPayload newUser
+    ) throws NoSuchAlgorithmException, InvalidKeySpecException, UnauthorizedException, ConflictException {
         UserEntity userEntity = userMapper.mapFromDtoToEntity(newUser);
-        
-        AuthResponseDto res = authService.register(userEntity);
-        
-        return new ResponseEntity<>(res, HttpStatus.OK);
+
+        AuthResponseDto registeredUser = authService.register(userEntity);
+
+        return new ResponseEntity<>(registeredUser, HttpStatus.OK);
     }
-    
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginPayload payload) throws NoSuchAlgorithmException, InvalidKeySpecException, UsernameNotFoundException {
-        
-        AuthResponseDto auth = authService.login(payload);
-        
-        return new ResponseEntity<>(auth, HttpStatus.OK);
+
+        AuthResponseDto authenticatedUser = authService.login(payload);
+
+        return new ResponseEntity<>(authenticatedUser, HttpStatus.OK);
     }
 }
