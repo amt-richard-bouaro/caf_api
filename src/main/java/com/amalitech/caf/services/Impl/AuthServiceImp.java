@@ -37,7 +37,7 @@ public class AuthServiceImp implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public AuthResponseDto register(UserEntity payload) throws NoSuchAlgorithmException, InvalidKeySpecException, ConflictException {
+    public AuthResponseDto register(UserEntity payload) throws NoSuchAlgorithmException, InvalidKeySpecException, ConflictException, UnauthorizedException {
 
         UserEntity user = UserEntity.builder()
                 .firstName(payload.getFirstName())
@@ -55,12 +55,12 @@ public class AuthServiceImp implements AuthService {
 
         UserEntity savedUser = userRepository.save(user);
 
-//        try {
-//            mailService.sendHtmlEmail(savedUser.getEmail(), "Account Registration Successful",
-//                    "<h1>Happy Browsing<h1>");
-//        } catch (MessagingException | UnsupportedEncodingException e) {
-//            throw new UnauthorizedException("Unable to send email");
-//        }
+        try {
+            mailService.sendHtmlEmail(savedUser.getEmail(), "Account Registration Successful",
+                    "<h1>Happy Browsing<h1>");
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new UnauthorizedException("Unable to send email");
+        }
 
         return generateAuthResponse(savedUser);
     }
