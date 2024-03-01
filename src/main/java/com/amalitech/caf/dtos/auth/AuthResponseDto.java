@@ -1,4 +1,4 @@
-package com.amalitech.caf.dtos.response;
+package com.amalitech.caf.dtos.auth;
 
 import com.amalitech.caf.enums.Role;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
-package com.amalitech.caf.dtos.requests;
+package com.amalitech.caf.dtos.host;
 
+import com.amalitech.caf.entities.StadiumEntity;
 import com.amalitech.caf.entities.TournamentEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class HostDto {
 
     private String country;
 
-    private List<String> cities;
+    private List<StadiumEntity> cities;
 
 //    private TournamentEntity tournament;
 }

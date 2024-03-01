@@ -1,6 +1,6 @@
 package com.amalitech.caf.services;
 
-import com.amalitech.caf.dtos.response.UsersResponseDto;
+import com.amalitech.caf.dtos.user.UsersResponseDto;
 
 import java.util.List;
 

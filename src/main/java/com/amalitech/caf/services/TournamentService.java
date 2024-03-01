@@ -10,4 +10,12 @@ public interface TournamentService {
     TournamentEntity createNewTournament(
             TournamentEntity tournamentEntity
     );
+
+    List<TournamentEntity> getAllTournaments();
+
+    TournamentEntity getTournament(Long id);
+
+//    TournamentEntity updateTournament(Long id);
+
+    boolean deleteTournament(Long id);
 }

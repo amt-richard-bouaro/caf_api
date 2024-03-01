@@ -1,7 +1,7 @@
 package com.amalitech.caf.mappers.impl;
 
 
-import com.amalitech.caf.dtos.requests.NewUserPayload;
+import com.amalitech.caf.dtos.auth.NewUserPayload;
 import com.amalitech.caf.entities.UserEntity;
 import com.amalitech.caf.mappers.UserMapper;
 import org.modelmapper.ModelMapper;

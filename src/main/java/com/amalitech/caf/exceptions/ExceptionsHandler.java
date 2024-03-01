@@ -1,6 +1,6 @@
 package com.amalitech.caf.exceptions;
 
-import com.amalitech.caf.dtos.response.ErrorResponseDto;
+import com.amalitech.caf.dtos.global.ErrorResponseDto;
 import com.amalitech.caf.enums.ResponseStatus;
 import jakarta.servlet.UnavailableException;
 import org.springframework.http.HttpStatus;
@@ -23,6 +23,17 @@ public class ExceptionsHandler {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponseDto> handlerConflictException(
             ConflictException exception,
+            WebRequest request
+    ) {
+        ErrorResponseDto responseDTO = new ErrorResponseDto<NullType>(ResponseStatus.ERROR, exception.getMessage(),
+                Instant.now()
+                        .toString(), null);
+        return new ResponseEntity<>(responseDTO, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlerNotFoundException(
+            NotFoundException exception,
             WebRequest request
     ) {
         ErrorResponseDto responseDTO = new ErrorResponseDto<NullType>(ResponseStatus.ERROR, exception.getMessage(),

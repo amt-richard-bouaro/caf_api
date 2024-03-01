@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,12 +20,12 @@ public class HostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String country;
-    
+
     @ElementCollection
-    private List<String> cities = new ArrayList<>();
-    
+    private List<StadiumEntity> cities;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "tournament_id")

@@ -1,11 +1,13 @@
 package com.amalitech.caf.controllers;
 
-import com.amalitech.caf.dtos.requests.NewTournamentDto;
+import com.amalitech.caf.dtos.global.SuccessResponse;
+import com.amalitech.caf.dtos.tournament.NewTournamentDto;
+import com.amalitech.caf.dtos.tournament.TournamentDto;
 import com.amalitech.caf.entities.HostEntity;
 import com.amalitech.caf.entities.TournamentEntity;
+import com.amalitech.caf.enums.ResponseStatus;
 import com.amalitech.caf.mappers.TournamentMapper;
 import com.amalitech.caf.services.TournamentService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,10 +16,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.lang.model.type.NullType;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -32,19 +34,17 @@ public class TournamentController {
 
 
     @PostMapping(path = "/create")
-    public ResponseEntity<NewTournamentDto> createTournaments(@Valid @RequestBody NewTournamentDto payload) {
+    public ResponseEntity<TournamentDto> createTournaments(@Valid @RequestBody NewTournamentDto payload) {
 
         TournamentEntity tournament = TournamentEntity.builder()
                 .name(payload.getName())
                 .edition(payload.getEdition())
                 .build();
 
-
         List<HostEntity> hosts = payload.getHosts()
                 .stream()
                 .map(host -> HostEntity.builder()
                         .country(host.getCountry())
-                        .cities(host.getCities())
                         .tournament(tournament)
                         .build())
                 .toList();
@@ -53,24 +53,37 @@ public class TournamentController {
 
         TournamentEntity createdTournament = tournamentService.createNewTournament(tournament);
 
-        NewTournamentDto res = tournamentMapper.mapFromEntityToDto(createdTournament);
+        TournamentDto res = tournamentMapper.mapFromEntityToDto(createdTournament);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
-    @Operation(description = "Get tournament history", summary = "This endpoint provide historical data on successfully CAF tournaments since its inception.", responses = {@ApiResponse(description = "Success", responseCode = "200"), @ApiResponse(description = "Unauthorized", responseCode = "403")})
-    @GetMapping(path = "/")
-    public List<TournamentEntity> getTournaments() {
-        return new ArrayList<>();
+    @Operation(description = "Get tournament history",
+
+            summary = "This endpoint provide historical data on successfully CAF tournaments since its inception.",
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200"),
+                    @ApiResponse(description = "Unauthorized", responseCode = "403")})
+
+
+    @GetMapping(path = "")
+    public ResponseEntity<List<TournamentDto>> getTournaments() {
+        List<TournamentEntity> tournaments = tournamentService.getAllTournaments();
+        List<TournamentDto> res = tournaments.stream().map(tournamentMapper::mapFromEntityToDto).toList();
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public TournamentEntity getTournaments(@PathVariable("id") Long id) {
-        return new TournamentEntity();
+    public ResponseEntity<TournamentDto> getTournaments(@PathVariable("id") Long id) {
+        TournamentEntity tournament = tournamentService.getTournament(id);
+        TournamentDto foundTournament = tournamentMapper.mapFromEntityToDto(tournament);
+        return new ResponseEntity<>(foundTournament, HttpStatus.OK);
     }
 
-    @Hidden
     @DeleteMapping(path = "/{id}")
-    public TournamentEntity deleteTournaments(@PathVariable("id") Long id) {
-        return new TournamentEntity();
+    public ResponseEntity<SuccessResponse<NullType>> deleteTournaments(@PathVariable("id") Long id) {
+        boolean deleted = this.tournamentService.deleteTournament(id);
+        String deletionStatus = deleted ? "successfully" : "failed";
+        SuccessResponse<NullType> res = new SuccessResponse<>(ResponseStatus.SUCCESS, "Tournament with id: " + id + " deletion " + deletionStatus, Instant.now().toString(), null);
+        return new ResponseEntity<>(res, deleted ? HttpStatus.OK : HttpStatus.EXPECTATION_FAILED);
     }
 }

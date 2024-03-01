@@ -1,4 +1,4 @@
-package com.amalitech.caf.dtos.requests;
+package com.amalitech.caf.dtos.auth;
 
 import com.amalitech.caf.enums.Role;
 import com.amalitech.caf.validation.ComplexPassword;
