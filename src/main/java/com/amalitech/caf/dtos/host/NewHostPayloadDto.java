@@ -1,5 +1,6 @@
 package com.amalitech.caf.dtos.host;
 
+import com.amalitech.caf.dtos.stadium.StadiumDto;
 import com.amalitech.caf.entities.StadiumEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,5 +20,5 @@ public class NewHostPayloadDto {
     @NotBlank
     private String country;
 
-    private List<StadiumEntity> cities = new ArrayList<>();
+    private List<StadiumDto> cities = new ArrayList<>();
 }

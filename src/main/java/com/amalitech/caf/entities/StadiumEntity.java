@@ -1,15 +1,19 @@
 package com.amalitech.caf.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.util.Objects;
 
 
 @Entity
 @Table(name = "stadium")
 @Builder
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class StadiumEntity {
@@ -17,6 +21,11 @@ public class StadiumEntity {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "host")
+    private HostEntity host;
 
     private String city;
 
@@ -26,23 +35,4 @@ public class StadiumEntity {
 
     private Long capacity;
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Long getCapacity() {
-        return capacity;
-    }
 }

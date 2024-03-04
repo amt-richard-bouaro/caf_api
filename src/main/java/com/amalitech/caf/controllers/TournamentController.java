@@ -1,6 +1,7 @@
 package com.amalitech.caf.controllers;
 
 import com.amalitech.caf.dtos.global.SuccessResponse;
+import com.amalitech.caf.dtos.stadium.StadiumDto;
 import com.amalitech.caf.dtos.tournament.NewTournamentDto;
 import com.amalitech.caf.dtos.tournament.TournamentDto;
 import com.amalitech.caf.entities.HostEntity;
@@ -34,7 +35,7 @@ public class TournamentController {
 
 
     @PostMapping(path = "/create")
-    public ResponseEntity<TournamentDto> createTournaments(@Valid @RequestBody NewTournamentDto payload) {
+    public ResponseEntity<SuccessResponse<TournamentDto>> createTournaments(@Valid @RequestBody NewTournamentDto payload) {
 
         TournamentEntity tournament = TournamentEntity.builder()
                 .name(payload.getName())
@@ -50,11 +51,11 @@ public class TournamentController {
                 .toList();
 
         tournament.setHosts(hosts);
-
         TournamentEntity createdTournament = tournamentService.createNewTournament(tournament);
 
         TournamentDto res = tournamentMapper.mapFromEntityToDto(createdTournament);
-        return new ResponseEntity<>(res, HttpStatus.CREATED);
+        SuccessResponse<TournamentDto> successResponse = new SuccessResponse<>(ResponseStatus.SUCCESS, "Tournament created successfully", Instant.now().toString(), res);
+        return new ResponseEntity<>(successResponse, HttpStatus.CREATED);
     }
 
     @Operation(description = "Get tournament history",

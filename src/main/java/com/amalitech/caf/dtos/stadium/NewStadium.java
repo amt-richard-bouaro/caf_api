@@ -1,5 +1,6 @@
 package com.amalitech.caf.dtos.stadium;
 
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -15,13 +16,19 @@ import org.springframework.web.multipart.MultipartFile;
 public class NewStadium {
     private Long id;
 
+    @NotBlank(message = "host id is required")
+    private Long host;
+
     @NotBlank(message = "City name is required")
     private String city;
+
     @NotBlank(message = "Image must be uploaded")
     private MultipartFile image;
+
     @NotBlank(message = "Name is required")
     private String name;
-    @NotBlank(message = "capacity is required")
-    @Size(min = 40000)
+
+    @Digits(message = "capacity must be a number", integer = 10, fraction = 0)
+    @Size(min = 1, max = 10, message = "capacity must be between 1 and 10 (inclusive)")
     private Long capacity;
 }
