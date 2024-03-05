@@ -2,6 +2,7 @@ package com.amalitech.caf.services.Impl;
 
 import com.amalitech.caf.dtos.auth.AuthResponseDto;
 import com.amalitech.caf.dtos.auth.LoginPayload;
+import com.amalitech.caf.dtos.auth.Token;
 import com.amalitech.caf.entities.UserEntity;
 import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;
@@ -10,6 +11,7 @@ import com.amalitech.caf.services.AuthService;
 import com.amalitech.caf.services.JwtService;
 
 import com.amalitech.caf.services.MailService;
+import com.amalitech.caf.services.TokenService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,8 @@ public class AuthServiceImp implements AuthService {
     private final MailService mailService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final TokenService tokenService;
 
 
     public AuthResponseDto register(UserEntity payload) throws NoSuchAlgorithmException, InvalidKeySpecException, ConflictException, UnauthorizedException {
@@ -90,6 +94,13 @@ public class AuthServiceImp implements AuthService {
     public AuthResponseDto generateAuthResponse(UserEntity user) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         String jwtToken = jwtService.generateToken(user);
+
+        Token token = Token.builder()
+                .token(jwtToken)
+                .email(user.getEmail())
+                .build();
+
+        tokenService.saveToken(token);
 
         return AuthResponseDto.builder()
                 .id(user.getId())

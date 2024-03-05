@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @Data
 @NoArgsConstructor
-public class NewStadium {
+public class StadiumRequest {
     private Long id;
 
     @NotBlank(message = "host id is required")

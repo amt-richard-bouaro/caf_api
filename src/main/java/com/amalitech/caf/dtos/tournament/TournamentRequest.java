@@ -1,6 +1,6 @@
 package com.amalitech.caf.dtos.tournament;
 
-import com.amalitech.caf.dtos.host.NewHostPayloadDto;
+import com.amalitech.caf.dtos.host.HostRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewTournamentDto {
+public class TournamentRequest {
 
     @NotBlank(message = "Name cannot be null")
     private String name;
@@ -24,7 +24,7 @@ public class NewTournamentDto {
     private String edition;
 
     @NotNull(message = "Provide Hosts")
-    private List<NewHostPayloadDto> hosts;
+    private List<HostRequest> hosts;
 
 }
 

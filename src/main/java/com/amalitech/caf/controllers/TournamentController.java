@@ -1,9 +1,8 @@
 package com.amalitech.caf.controllers;
 
 import com.amalitech.caf.dtos.global.SuccessResponse;
-import com.amalitech.caf.dtos.stadium.StadiumDto;
-import com.amalitech.caf.dtos.tournament.NewTournamentDto;
-import com.amalitech.caf.dtos.tournament.TournamentDto;
+import com.amalitech.caf.dtos.tournament.TournamentRequest;
+import com.amalitech.caf.dtos.tournament.TournamentResponse;
 import com.amalitech.caf.entities.HostEntity;
 import com.amalitech.caf.entities.TournamentEntity;
 import com.amalitech.caf.enums.ResponseStatus;
@@ -33,28 +32,13 @@ public class TournamentController {
 
     private final TournamentService tournamentService;
 
-
     @PostMapping(path = "/create")
-    public ResponseEntity<SuccessResponse<TournamentDto>> createTournaments(@Valid @RequestBody NewTournamentDto payload) {
+    public ResponseEntity<SuccessResponse<TournamentResponse>> createTournaments(@Valid @RequestBody TournamentRequest payload) {
 
-        TournamentEntity tournament = TournamentEntity.builder()
-                .name(payload.getName())
-                .edition(payload.getEdition())
-                .build();
+        TournamentEntity createdTournament = tournamentService.createNewTournament(payload);
 
-        List<HostEntity> hosts = payload.getHosts()
-                .stream()
-                .map(host -> HostEntity.builder()
-                        .country(host.getCountry())
-                        .tournament(tournament)
-                        .build())
-                .toList();
-
-        tournament.setHosts(hosts);
-        TournamentEntity createdTournament = tournamentService.createNewTournament(tournament);
-
-        TournamentDto res = tournamentMapper.mapFromEntityToDto(createdTournament);
-        SuccessResponse<TournamentDto> successResponse = new SuccessResponse<>(ResponseStatus.SUCCESS, "Tournament created successfully", Instant.now().toString(), res);
+        TournamentResponse res = tournamentMapper.mapFromEntityToDto(createdTournament);
+        SuccessResponse<TournamentResponse> successResponse = new SuccessResponse<>(ResponseStatus.SUCCESS, "Tournament created successfully", Instant.now().toString(), res);
         return new ResponseEntity<>(successResponse, HttpStatus.CREATED);
     }
 
@@ -65,19 +49,20 @@ public class TournamentController {
                     @ApiResponse(description = "Success", responseCode = "200"),
                     @ApiResponse(description = "Unauthorized", responseCode = "403")})
 
-
     @GetMapping(path = "")
-    public ResponseEntity<List<TournamentDto>> getTournaments() {
+    public ResponseEntity<SuccessResponse<List<TournamentResponse>>> getTournaments() {
         List<TournamentEntity> tournaments = tournamentService.getAllTournaments();
-        List<TournamentDto> res = tournaments.stream().map(tournamentMapper::mapFromEntityToDto).toList();
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        List<TournamentResponse> res = tournaments.stream().map(tournamentMapper::mapFromEntityToDto).toList();
+        SuccessResponse<List<TournamentResponse>> successResponse = new SuccessResponse<>(ResponseStatus.SUCCESS, "Tournaments found", Instant.now().toString(), res);
+        return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<TournamentDto> getTournaments(@PathVariable("id") Long id) {
+    public ResponseEntity<SuccessResponse<TournamentResponse>> getTournaments(@PathVariable("id") Long id) {
         TournamentEntity tournament = tournamentService.getTournament(id);
-        TournamentDto foundTournament = tournamentMapper.mapFromEntityToDto(tournament);
-        return new ResponseEntity<>(foundTournament, HttpStatus.OK);
+        TournamentResponse foundTournament = tournamentMapper.mapFromEntityToDto(tournament);
+        SuccessResponse<TournamentResponse> successResponse = new SuccessResponse<>(ResponseStatus.SUCCESS, "Tournament found", Instant.now().toString(), foundTournament);
+        return new ResponseEntity<>(successResponse, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

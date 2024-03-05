@@ -39,7 +39,7 @@ public class ExceptionsHandler {
         ErrorResponseDto responseDTO = new ErrorResponseDto<NullType>(ResponseStatus.ERROR, exception.getMessage(),
                 Instant.now()
                         .toString(), null);
-        return new ResponseEntity<>(responseDTO, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
     }
 
 

@@ -1,11 +1,10 @@
 package com.amalitech.caf.services.Impl;
 
-import com.amalitech.caf.dtos.stadium.NewStadium;
+import com.amalitech.caf.dtos.stadium.StadiumRequest;
 import com.amalitech.caf.entities.HostEntity;
 import com.amalitech.caf.entities.StadiumEntity;
 import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.mappers.StadiumMapper;
-import com.amalitech.caf.repositories.HostRepository;
 import com.amalitech.caf.repositories.StadiumRepository;
 import com.amalitech.caf.services.CloudinaryService;
 import com.amalitech.caf.services.HostService;
@@ -15,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +29,7 @@ public class StadiumServiceImp implements StadiumService {
     private CloudinaryService cloudinaryService;
 
     @Override
-    public StadiumEntity createStadium(NewStadium payload) {
+    public StadiumEntity createStadium(StadiumRequest payload) {
 
         List<StadiumEntity> existingStadia = stadiumRepository.findStadiumByCityOrName(payload.getName(), payload.getCity());
 

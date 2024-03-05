@@ -1,9 +1,7 @@
 package com.amalitech.caf.dtos.host;
 
-import com.amalitech.caf.dtos.stadium.StadiumDto;
-import com.amalitech.caf.entities.StadiumEntity;
+import com.amalitech.caf.dtos.stadium.StadiumResponse;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +14,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewHostPayloadDto {
+public class HostRequest {
     @NotBlank
     private String country;
 
-    private List<StadiumDto> cities = new ArrayList<>();
+    private List<StadiumResponse> cities = new ArrayList<>();
 }

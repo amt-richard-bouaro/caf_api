@@ -1,11 +1,11 @@
 package com.amalitech.caf.mappers;
 
-import com.amalitech.caf.dtos.tournament.NewTournamentDto;
-import com.amalitech.caf.dtos.tournament.TournamentDto;
+import com.amalitech.caf.dtos.tournament.TournamentRequest;
+import com.amalitech.caf.dtos.tournament.TournamentResponse;
 import com.amalitech.caf.entities.TournamentEntity;
 
 public interface TournamentMapper {
-    TournamentEntity mapFromDtoToEntity(NewTournamentDto tournamentDto);
+    TournamentEntity mapFromDtoToEntity(TournamentRequest tournamentDto);
 
-    TournamentDto mapFromEntityToDto(TournamentEntity tournamentEntity);
+    TournamentResponse mapFromEntityToDto(TournamentEntity tournamentEntity);
 }

@@ -1,6 +1,6 @@
 package com.amalitech.caf.mappers.impl;
 
-import com.amalitech.caf.dtos.stadium.StadiumDto;
+import com.amalitech.caf.dtos.stadium.StadiumResponse;
 import com.amalitech.caf.entities.StadiumEntity;
 import com.amalitech.caf.mappers.StadiumMapper;
 import org.modelmapper.ModelMapper;
@@ -15,12 +15,12 @@ public class StadiumMapperImp implements StadiumMapper {
     }
 
     @Override
-    public StadiumDto mapFromEntityToDto(StadiumEntity stadiumEntity) {
-        return modelMapper.map(stadiumEntity, StadiumDto.class);
+    public StadiumResponse mapFromEntityToDto(StadiumEntity stadiumEntity) {
+        return modelMapper.map(stadiumEntity, StadiumResponse.class);
     }
 
     @Override
-    public StadiumEntity mapFromDtoToEntity(StadiumDto stadiumDto) {
-        return modelMapper.map(stadiumDto, StadiumEntity.class);
+    public StadiumEntity mapFromDtoToEntity(StadiumResponse stadiumResponse) {
+        return modelMapper.map(stadiumResponse, StadiumEntity.class);
     }
 }

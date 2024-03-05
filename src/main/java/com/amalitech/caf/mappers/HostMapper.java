@@ -1,11 +1,10 @@
 package com.amalitech.caf.mappers;
 
-import com.amalitech.caf.configs.mapping.Mapper;
-import com.amalitech.caf.dtos.host.HostDto;
+import com.amalitech.caf.dtos.host.HostResponse;
 import com.amalitech.caf.entities.HostEntity;
 
 public interface HostMapper {
-    HostEntity mapFromDtoToEntity(HostDto hostDto);
+    HostEntity mapFromDtoToEntity(HostResponse hostResponse);
 
-    HostDto mapFromEntityToDto(HostEntity hostEntity);
+    HostResponse mapFromEntityToDto(HostEntity hostEntity);
 }

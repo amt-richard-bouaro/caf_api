@@ -1,7 +1,6 @@
 package com.amalitech.caf.dtos.tournament;
 
-import com.amalitech.caf.dtos.host.HostDto;
-import com.amalitech.caf.dtos.host.NewHostPayloadDto;
+import com.amalitech.caf.dtos.host.HostResponse;
 import lombok.*;
 
 import java.util.List;
@@ -11,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TournamentDto {
+public class TournamentResponse {
     private Long id;
     private String name;
     private String edition;
-    private List<HostDto> hosts;
+    private List<HostResponse> hosts;
 }

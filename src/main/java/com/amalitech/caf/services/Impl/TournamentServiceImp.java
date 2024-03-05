@@ -1,5 +1,7 @@
 package com.amalitech.caf.services.Impl;
 
+import com.amalitech.caf.dtos.tournament.TournamentRequest;
+import com.amalitech.caf.entities.HostEntity;
 import com.amalitech.caf.entities.TournamentEntity;
 import com.amalitech.caf.exceptions.NotFoundException;
 import com.amalitech.caf.repositories.TournamentRepository;
@@ -21,10 +23,23 @@ public class TournamentServiceImp implements TournamentService {
 
     @Override
     public TournamentEntity createNewTournament(
-            TournamentEntity tournament
+            TournamentRequest payload
 
     ) {
+        TournamentEntity tournament = TournamentEntity.builder()
+                .name(payload.getName())
+                .edition(payload.getEdition())
+                .build();
 
+        List<HostEntity> hosts = payload.getHosts()
+                .stream()
+                .map(host -> HostEntity.builder()
+                        .country(host.getCountry())
+                        .tournament(tournament)
+                        .build())
+                .toList();
+
+        tournament.setHosts(hosts);
         return tournamentRepository.save(tournament);
 
     }
@@ -52,6 +67,10 @@ public class TournamentServiceImp implements TournamentService {
 
     @Override
     public boolean deleteTournament(Long id) {
+        if (!tournamentRepository.existsById(id)) {
+            throw new NotFoundException("Tournament with id " + id + " not found");
+        }
+
         tournamentRepository.deleteById(id);
         return true;
     }

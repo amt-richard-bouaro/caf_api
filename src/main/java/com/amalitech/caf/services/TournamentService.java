@@ -1,14 +1,14 @@
 package com.amalitech.caf.services;
 
 
-import com.amalitech.caf.entities.HostEntity;
+import com.amalitech.caf.dtos.tournament.TournamentRequest;
 import com.amalitech.caf.entities.TournamentEntity;
 
 import java.util.List;
 
 public interface TournamentService {
     TournamentEntity createNewTournament(
-            TournamentEntity tournamentEntity
+            TournamentRequest payload
     );
 
     List<TournamentEntity> getAllTournaments();

@@ -1,6 +1,6 @@
 package com.amalitech.caf.services.Impl;
 
-import com.amalitech.caf.dtos.host.NewHostPayloadDto;
+import com.amalitech.caf.dtos.host.HostRequest;
 import com.amalitech.caf.entities.HostEntity;
 import com.amalitech.caf.entities.StadiumEntity;
 import com.amalitech.caf.exceptions.NotFoundException;
@@ -8,7 +8,6 @@ import com.amalitech.caf.mappers.HostMapper;
 import com.amalitech.caf.repositories.HostRepository;
 import com.amalitech.caf.services.HostService;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.Host;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -22,7 +21,7 @@ public class HostServiceImp implements HostService {
     private final HostRepository hostRepository;
 
     @Override
-    public HostEntity createHost(NewHostPayloadDto payload) {
+    public HostEntity createHost(HostRequest payload) {
         return null;
     }
 
