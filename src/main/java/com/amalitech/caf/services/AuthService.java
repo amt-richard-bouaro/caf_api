@@ -14,4 +14,6 @@ public interface AuthService {
 
     AuthResponseDto login(LoginPayload payload) throws NoSuchAlgorithmException, InvalidKeySpecException;
 
+    void logout(String token);
+
 }

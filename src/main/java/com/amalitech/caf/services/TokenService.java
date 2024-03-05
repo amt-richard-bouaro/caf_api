@@ -9,4 +9,6 @@ public interface TokenService {
     TokenEntity getToken(String email);
 
     void deleteToken(String token);
+
+    void deleteToken(String email, String token);
 }

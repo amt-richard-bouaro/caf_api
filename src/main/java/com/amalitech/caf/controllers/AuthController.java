@@ -3,8 +3,11 @@ package com.amalitech.caf.controllers;
 import com.amalitech.caf.dtos.auth.NewUserPayload;
 import com.amalitech.caf.dtos.auth.AuthResponseDto;
 import com.amalitech.caf.dtos.auth.LoginPayload;
+import com.amalitech.caf.dtos.global.SuccessResponse;
+import com.amalitech.caf.dtos.tournament.TournamentResponse;
 import com.amalitech.caf.dtos.user.UsersResponseDto;
 import com.amalitech.caf.entities.UserEntity;
+import com.amalitech.caf.enums.ResponseStatus;
 import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;
 import com.amalitech.caf.mappers.UserMapper;
@@ -16,11 +19,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.lang.model.type.NullType;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -60,5 +67,18 @@ public class AuthController {
         AuthResponseDto authenticatedUser = authService.login(payload);
 
         return new ResponseEntity<>(authenticatedUser, HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<SuccessResponse<NullType>> logout() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getCredentials() != null) {
+            String token = authentication.getCredentials().toString();
+            authService.logout(token);
+        }
+        SuccessResponse<NullType> response = new SuccessResponse<>(ResponseStatus.SUCCESS, "Logout successful", Instant.now().toString(), null);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

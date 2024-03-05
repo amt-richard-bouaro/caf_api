@@ -16,4 +16,8 @@ public interface TokenRepository extends JpaRepository<TokenEntity, Long> {
 
     //    @Query("DELETE FROM TokenEntity t WHERE t.email= ?")
     void deleteByEmail(String email);
+
+    void deleteByToken(String token);
+
+    void deleteByEmailAndToken(String email, String token);
 }

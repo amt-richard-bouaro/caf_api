@@ -37,8 +37,13 @@ public class TokenServiceImp implements TokenService {
     }
 
     @Override
-    public void deleteToken(String email) {
-        tokenRepository.deleteByEmail(email);
+    public void deleteToken(String token) {
+        tokenRepository.deleteByToken(token);
+    }
+
+    @Override
+    public void deleteToken(String email, String token) {
+        tokenRepository.deleteByEmailAndToken(email, token);
     }
 
 }

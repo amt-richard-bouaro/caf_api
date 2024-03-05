@@ -90,6 +90,10 @@ public class AuthServiceImp implements AuthService {
 
     }
 
+    public void logout(String token) {
+        tokenService.deleteToken(token);
+        log.info("User logged out successfully");
+    }
 
     public AuthResponseDto generateAuthResponse(UserEntity user) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
