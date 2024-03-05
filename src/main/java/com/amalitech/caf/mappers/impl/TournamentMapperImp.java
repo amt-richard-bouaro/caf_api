@@ -1,7 +1,8 @@
 package com.amalitech.caf.mappers.impl;
 
 
-import com.amalitech.caf.dtos.requests.NewTournamentDto;
+import com.amalitech.caf.dtos.tournament.NewTournamentDto;
+import com.amalitech.caf.dtos.tournament.TournamentDto;
 import com.amalitech.caf.entities.TournamentEntity;
 import com.amalitech.caf.mappers.TournamentMapper;
 import org.modelmapper.ModelMapper;
@@ -21,7 +22,7 @@ public class TournamentMapperImp implements TournamentMapper {
     }
 
     @Override
-    public NewTournamentDto mapFromEntityToDto(TournamentEntity tournamentEntity) {
-        return modelMapper.map(tournamentEntity, NewTournamentDto.class);
+    public TournamentDto mapFromEntityToDto(TournamentEntity tournamentEntity) {
+        return modelMapper.map(tournamentEntity, TournamentDto.class);
     }
 }

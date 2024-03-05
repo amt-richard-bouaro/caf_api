@@ -1,8 +1,12 @@
 server:
-  port: 7006
+  port: 7007
 springdoc:
   swagger-ui:
     path: /
+cloudinary:
+  cloud_name: dcd4jsjmz
+  api_key: 242924845957737
+  api_secret: UUWlCiFyHoXjaw44XA5lCXvz52A
 application:
   security:
     jwt:

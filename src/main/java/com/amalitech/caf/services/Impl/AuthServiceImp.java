@@ -1,10 +1,8 @@
 package com.amalitech.caf.services.Impl;
 
-import com.amalitech.caf.dtos.response.AuthResponseDto;
-import com.amalitech.caf.dtos.requests.LoginPayload;
-import com.amalitech.caf.dtos.response.UsersResponseDto;
+import com.amalitech.caf.dtos.auth.AuthResponseDto;
+import com.amalitech.caf.dtos.auth.LoginPayload;
 import com.amalitech.caf.entities.UserEntity;
-import com.amalitech.caf.enums.Role;
 import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;
 import com.amalitech.caf.repositories.UserRepository;
@@ -14,6 +12,7 @@ import com.amalitech.caf.services.JwtService;
 import com.amalitech.caf.services.MailService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,8 +23,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthServiceImp implements AuthService {
 
     private final UserRepository userRepository;
@@ -84,6 +85,7 @@ public class AuthServiceImp implements AuthService {
         return generateAuthResponse(user);
 
     }
+
 
     public AuthResponseDto generateAuthResponse(UserEntity user) throws NoSuchAlgorithmException, InvalidKeySpecException {
 

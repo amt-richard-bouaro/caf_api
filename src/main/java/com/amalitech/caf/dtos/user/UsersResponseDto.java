@@ -1,4 +1,4 @@
-package com.amalitech.caf.dtos.response;
+package com.amalitech.caf.dtos.user;
 
 import com.amalitech.caf.enums.Role;
 import lombok.AllArgsConstructor;
@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 public class UsersResponseDto {
     private Long id;
     private String firstName;
-    
+
     private String lastName;
-    
+
     private String email;
-    
+
     private Role role;
 }

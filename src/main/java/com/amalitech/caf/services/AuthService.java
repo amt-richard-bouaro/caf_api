@@ -1,7 +1,7 @@
 package com.amalitech.caf.services;
 
-import com.amalitech.caf.dtos.response.AuthResponseDto;
-import com.amalitech.caf.dtos.requests.LoginPayload;
+import com.amalitech.caf.dtos.auth.AuthResponseDto;
+import com.amalitech.caf.dtos.auth.LoginPayload;
 import com.amalitech.caf.entities.UserEntity;
 import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;

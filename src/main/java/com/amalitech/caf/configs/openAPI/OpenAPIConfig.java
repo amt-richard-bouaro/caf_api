@@ -15,13 +15,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @OpenAPIDefinition(info = @Info(contact = @Contact(name = "Richard Bouaro", email = "richard.bouaro@amalitech.com", url = "https://amalitech.org"),
 
-        description = "OpenAPI documentation for CAF Tournaments API", title = "CAF API", version = "1.0.0", license = @License(name = "AMALITECH", url = "https://amalitech.org")
+        description = "OpenAPI documentation for CAF Tournaments API", title = "CAF API",
+        version = "1.0.0", license = @License(name = "AMALITECH", url = "https://amalitech.org")
 
-), servers = {@Server(description = "Development Server", url = "http://localhost:8080"), @Server(description = "Production Server", url = "http://localhost:8080")
+), servers = {@Server(description = "Development Server", url = "http://localhost:7007"),
+        @Server(description = "Production Server", url = "http://localhost:7007")
 
 },
 
-        security = {@SecurityRequirement(name = "BearerAuth")}
+        security = {@SecurityRequirement(name = "BearerAuth"),}
 
 
 )

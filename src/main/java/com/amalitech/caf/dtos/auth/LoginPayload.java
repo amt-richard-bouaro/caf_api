@@ -1,4 +1,4 @@
-package com.amalitech.caf.dtos.requests;
+package com.amalitech.caf.dtos.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginPayload {
-    
+
     private String email;
-    
+
     private String password;
 }

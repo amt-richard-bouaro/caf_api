@@ -1,9 +1,9 @@
 package com.amalitech.caf.controllers;
 
-import com.amalitech.caf.dtos.requests.NewUserPayload;
-import com.amalitech.caf.dtos.response.AuthResponseDto;
-import com.amalitech.caf.dtos.requests.LoginPayload;
-import com.amalitech.caf.dtos.response.UsersResponseDto;
+import com.amalitech.caf.dtos.auth.NewUserPayload;
+import com.amalitech.caf.dtos.auth.AuthResponseDto;
+import com.amalitech.caf.dtos.auth.LoginPayload;
+import com.amalitech.caf.dtos.user.UsersResponseDto;
 import com.amalitech.caf.entities.UserEntity;
 import com.amalitech.caf.exceptions.ConflictException;
 import com.amalitech.caf.exceptions.UnauthorizedException;
@@ -16,8 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 

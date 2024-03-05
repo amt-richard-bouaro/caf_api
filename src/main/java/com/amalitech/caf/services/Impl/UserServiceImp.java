@@ -1,15 +1,13 @@
 package com.amalitech.caf.services.Impl;
 
-import com.amalitech.caf.dtos.response.UsersResponseDto;
+import com.amalitech.caf.dtos.user.UsersResponseDto;
 import com.amalitech.caf.entities.UserEntity;
 import com.amalitech.caf.repositories.UserRepository;
 import com.amalitech.caf.services.UserService;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 
 @Service
