@@ -3,6 +3,7 @@ package com.amalitech.caf.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Builder
@@ -18,5 +19,5 @@ public class TokenEntity {
     private Long id;
     private String token;
     private String email;
-    private LocalDateTime expiryDate;
+    private Instant expiryDate;
 }

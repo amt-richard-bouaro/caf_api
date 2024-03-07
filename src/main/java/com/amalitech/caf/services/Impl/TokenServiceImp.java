@@ -23,7 +23,7 @@ public class TokenServiceImp implements TokenService {
     @Override
     public TokenEntity saveToken(Token payload) {
         TokenEntity newToken = TokenEntity.builder()
-                .expiryDate(LocalDateTime.from(Instant.now()))
+                .expiryDate(Instant.now())
                 .token(payload.getToken())
                 .email(payload.getEmail())
                 .build();

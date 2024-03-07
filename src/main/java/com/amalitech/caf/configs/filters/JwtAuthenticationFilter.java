@@ -73,11 +73,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new UnavailableException("Invalid token");
         }
 
-        if (userBeingAuthenticatedToken.getExpiryDate().isBefore(LocalDateTime.from(Instant.now()))) {
+        if (userBeingAuthenticatedToken.getExpiryDate().isBefore(Instant.now())) {
             tokenService.deleteToken(userEmail, jwt);
         }
 
-        if (userEmail != null && SecurityContextHolder.getContext()
+        if (SecurityContextHolder.getContext()
                 .getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 

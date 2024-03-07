@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,5 +16,5 @@ public class Token {
     private Long id;
     private String token;
     private String email;
-    private LocalDateTime expiryDate;
+    private Instant expiryDate;
 }
